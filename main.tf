@@ -36,6 +36,14 @@ resource "aws_ecs_task_definition" "httpd_task" {
          "essential":true,
          "image":"906394416424.dkr.ecr.us-east-1.amazonaws.com/aws-for-fluent-bit:stable",
          "name":"log_router",
+         "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+               "awslogs-group" : "/ecs/fargate-task-definition",
+               "awslogs-region": "eu-west-1",
+               "awslogs-stream-prefix": "ecs"
+            }
+         },
          "firelensConfiguration":{
              "type":"fluentbit"
          },
