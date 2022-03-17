@@ -18,9 +18,9 @@ resource "aws_default_subnet" "default_subnet_c" {
   availability_zone = "eu-west-1c"
 }
 
-resource "aws_ecr_repository" "mberman_ecr_repo_httpd" {
-  name = "mberman-ecr-repo/httpd"
-}
+#resource "aws_ecr_repository" "mberman_ecr_repo_httpd" {
+#  name = "mberman-ecr-repo/httpd"
+#}
 
 resource "aws_ecs_cluster" "bluevine_cluster" {
   name = "bluevine-cluster"
@@ -33,6 +33,15 @@ resource "aws_ecs_task_definition" "httpd_task" {
   container_definitions    = <<DEFINITION
   [
       {
+         "essential":true,
+         "image":"906394416424.dkr.ecr.us-east-1.amazonaws.com/aws-for-fluent-bit:stable",
+         "name":"log_router",
+         "firelensConfiguration":{
+             "type":"fluentbit"
+         },
+         "memoryReservation":50
+      },
+      {
          "command": [
             "/bin/sh -c \"echo '<html> <head> <title>Bluevine</title> <style>body {margin-top: 40px; background-color: #333;} </style> </head><body> <div style=color:white;text-align:center> <h1>Hello World!!!</h1> <h2>Max Berman</h2> <p>March, 2022</p> </div></body></html>' >  /usr/local/apache2/htdocs/index.html && httpd-foreground\""
          ],
@@ -43,11 +52,12 @@ resource "aws_ecs_task_definition" "httpd_task" {
          "essential": true,
          "image": "httpd:2.4",
          "logConfiguration": {
-            "logDriver": "awslogs",
-            "options": {
-               "awslogs-group" : "/ecs/fargate-task-definition",
-               "awslogs-region": "eu-west-1",
-               "awslogs-stream-prefix": "ecs"
+            "logDriver": "awsfirelens",
+               "options": {
+                "Name": "http",
+                "Host": "127.0.0.1",
+                "Port": "8090",
+                "Format": "json"
             }
          },
          "name": "httpd_task",
@@ -55,6 +65,26 @@ resource "aws_ecs_task_definition" "httpd_task" {
             {
                "containerPort": 80,
                "hostPort": 80,
+               "protocol": "tcp"
+            }
+         ]
+      },
+      {
+         "essential": true,
+         "image": "577060021721.dkr.ecr.eu-west-1.amazonaws.com/mberman-ecr-repo/logstash-8.1.0-mberman:latest",
+         "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+               "awslogs-group" : "/ecs/fargate-task-definition",
+               "awslogs-region": "eu-west-1",
+               "awslogs-stream-prefix": "ecs"
+            }
+         },
+         "name": "logstash_task",
+         "portMappings": [
+            {
+               "containerPort": 8090,
+               "hostPort": 8090,
                "protocol": "tcp"
             }
          ]
