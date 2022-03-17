@@ -94,7 +94,7 @@ resource "aws_ecs_task_definition" "httpd_task" {
 
   requires_compatibilities = ["FARGATE"]
   network_mode             = "awsvpc"
-  memory                   = 512
+  memory                   = 2048
   cpu                      = 256
   execution_role_arn       = aws_iam_role.ecsTaskExecutionRole.arn
 }
