@@ -151,6 +151,8 @@ resource "aws_lb_target_group" "logstash_target_group" {
     port = 8080
     matcher = "200,301,302"
     path = "/"
+    interval = 30
+    unhealthy_threshold = 10
   }
 }
 
