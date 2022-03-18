@@ -29,9 +29,29 @@ resource "aws_ecs_cluster" "bluevine_cluster" {
       #"image": "${aws_ecr_repository.mberman_ecr_repo_httpd.repository_url}",
 
 resource "aws_ecs_task_definition" "httpd_task" {
-  family                   = "httpd_task"
+  family                   = "httpd"
   container_definitions    = <<DEFINITION
   [
+      {
+         "essential": true,
+         "image": "577060021721.dkr.ecr.eu-west-1.amazonaws.com/mberman-ecr-repo/logstash-8.1.0-mberman:latest",
+         "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+               "awslogs-group" : "/ecs/fargate-task-definition",
+               "awslogs-region": "eu-west-1",
+               "awslogs-stream-prefix": "ecs"
+            }
+         },
+         "name": "logstash",
+         "portMappings": [
+            {
+               "containerPort": 8090,
+               "hostPort": 8090,
+               "protocol": "tcp"
+            }
+         ]
+      },
       {
          "essential":true,
          "image":"906394416424.dkr.ecr.us-east-1.amazonaws.com/aws-for-fluent-bit:stable",
@@ -68,31 +88,11 @@ resource "aws_ecs_task_definition" "httpd_task" {
                 "Format": "json"
             }
          },
-         "name": "httpd_task",
+         "name": "httpd",
          "portMappings": [
             {
                "containerPort": 80,
                "hostPort": 80,
-               "protocol": "tcp"
-            }
-         ]
-      },
-      {
-         "essential": true,
-         "image": "577060021721.dkr.ecr.eu-west-1.amazonaws.com/mberman-ecr-repo/logstash-8.1.0-mberman:latest",
-         "logConfiguration": {
-            "logDriver": "awslogs",
-            "options": {
-               "awslogs-group" : "/ecs/fargate-task-definition",
-               "awslogs-region": "eu-west-1",
-               "awslogs-stream-prefix": "ecs"
-            }
-         },
-         "name": "logstash_task",
-         "portMappings": [
-            {
-               "containerPort": 8090,
-               "hostPort": 8090,
                "protocol": "tcp"
             }
          ]
@@ -150,6 +150,22 @@ resource "aws_security_group" "load_balancer_security_group" {
   }
 }
 
+resource "aws_security_group" "logstash_security_group" {
+  ingress {
+    from_port   = 8090
+    to_port     = 8090
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0    # Allowing any incoming port
+    to_port     = 0    # Allowing any outgoing port
+    protocol    = "-1" # Allowing any outgoing protocol
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "aws_lb_target_group" "http_target_group" {
   name        = "http-target-group"
   port        = 80
@@ -192,7 +208,7 @@ resource "aws_ecs_service" "httpd_service" {
 
   network_configuration {
     subnets          = ["${aws_default_subnet.default_subnet_a.id}", "${aws_default_subnet.default_subnet_b.id}", "${aws_default_subnet.default_subnet_c.id}"]
-    security_groups  = ["${aws_security_group.load_balancer_security_group.id}"]
+    security_groups  = ["${aws_security_group.load_balancer_security_group.id}","${aws_security_group.logstash_security_group.id}"]
     assign_public_ip = true
   }
 }
