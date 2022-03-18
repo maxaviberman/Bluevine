@@ -187,7 +187,7 @@ resource "aws_ecs_task_definition" "httpd_task" {
             "logDriver": "awsfirelens",
                "options": {
                 "Name": "http",
-                "Host": "aws_alb.logstash_load_balancer.dns_name",
+                "Host": "${aws_alb.logstash_load_balancer.dns_name}",
                 "Port": "8090",
                 "Format": "json"
             }
@@ -302,7 +302,7 @@ resource "aws_lb_listener_rule" "kibana_redirect" {
     type = "redirect"
 
     redirect {
-      Host      = "www.ynet.co.il",
+      host      = "www.ynet.co.il"
       port        = "80"
       protocol    = "HTTP"
       status_code = "HTTP_301"
