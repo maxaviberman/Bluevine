@@ -323,9 +323,9 @@ resource "aws_lb_listener_rule" "kibana_redirect" {
     type = "redirect"
 
     redirect {
-      host      = "www.ynet.co.il"
-      port        = "80"
-      protocol    = "HTTP"
+      host      = "https://maxaviberman.kb.us-central1.gcp.cloud.es.io"
+      port        = "9243"
+      protocol    = "HTTPS"
       status_code = "HTTP_301"
     }
   }
