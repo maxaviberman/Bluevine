@@ -66,6 +66,11 @@ resource "aws_ecs_task_definition" "logstash_task" {
          "name": "logstash_task",
          "portMappings": [
             {
+               "containerPort": 8080,
+               "hostPort": 8080,
+               "protocol": "tcp"
+            },
+            {
                "containerPort": 8090,
                "hostPort": 8090,
                "protocol": "tcp"
@@ -110,6 +115,13 @@ resource "aws_security_group" "logstash_security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     from_port   = 0    # Allowing any incoming port
     to_port     = 0    # Allowing any outgoing port
@@ -136,6 +148,7 @@ resource "aws_lb_target_group" "logstash_target_group" {
   target_type = "ip"
   vpc_id      = "${aws_default_vpc.default_vpc.id}" 
   health_check {
+    port = 8080
     matcher = "200,301,302"
     path = "/"
   }
