@@ -292,3 +292,27 @@ resource "aws_route53_record" "www" {
     evaluate_target_health = true
   }
 }
+
+###### Redirect to Kibana ######
+
+resource "aws_lb_listener_rule" "kibana_redirect" {
+  listener_arn = aws_lb_listener.http_listener.arn
+
+  action {
+    type = "redirect"
+
+    redirect {
+      Host      = "www.ynet.co.il",
+      port        = "80"
+      protocol    = "HTTP"
+      status_code = "HTTP_301"
+    }
+  }
+  
+  condition {
+    path_pattern {
+      values = ["/kibana/*"]
+    }
+  }
+  
+}
