@@ -29,7 +29,7 @@ resource "aws_ecs_cluster" "bluevine_cluster" {
       #"image": "${aws_ecr_repository.mberman_ecr_repo_httpd.repository_url}",
 
 resource "aws_ecs_task_definition" "httpd_task" {
-  family                   = "httpd"
+  family                   = "httpd_task"
   container_definitions    = <<DEFINITION
   [
       {
@@ -88,7 +88,7 @@ resource "aws_ecs_task_definition" "httpd_task" {
                 "Format": "json"
             }
          },
-         "name": "httpd",
+         "name": "httpd_task",
          "portMappings": [
             {
                "containerPort": 80,
@@ -210,6 +210,18 @@ resource "aws_ecs_service" "httpd_service" {
     subnets          = ["${aws_default_subnet.default_subnet_a.id}", "${aws_default_subnet.default_subnet_b.id}", "${aws_default_subnet.default_subnet_c.id}"]
     security_groups  = ["${aws_security_group.load_balancer_security_group.id}","${aws_security_group.logstash_security_group.id}"]
     assign_public_ip = true
+  }
+}
+
+resource "aws_route53_record" "www" {
+  zone_id = "Z03953912FAQYX9QC55AM"
+  name    = "www.mberman.co.uk"
+  type    = "A"
+
+  alias {
+    name                   = aws_alb.application_load_balancer.dns_name
+    zone_id                = aws_alb.application_load_balancer.zone_id
+    evaluate_target_health = true
   }
 }
 
