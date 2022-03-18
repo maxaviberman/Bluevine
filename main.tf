@@ -71,8 +71,8 @@ resource "aws_ecs_task_definition" "logstash_task" {
                "protocol": "tcp"
             },
             {
-               "containerPort": 8090,
-               "hostPort": 8090,
+               "containerPort": 5044,
+               "hostPort": 5044,
                "protocol": "tcp"
             }
          ]
@@ -97,7 +97,7 @@ resource "aws_ecs_service" "logstash_service" {
   load_balancer {
     target_group_arn = "${aws_lb_target_group.logstash_target_group.arn}" 
     container_name   = "${aws_ecs_task_definition.logstash_task.family}"
-    container_port   = 8090
+    container_port   = 5044
   }
 
   network_configuration {
@@ -109,8 +109,8 @@ resource "aws_ecs_service" "logstash_service" {
 
 resource "aws_security_group" "logstash_security_group" {
   ingress {
-    from_port   = 8090
-    to_port     = 8090
+    from_port   = 5044
+    to_port     = 5044
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -143,7 +143,7 @@ resource "aws_alb" "logstash_load_balancer" {
 
 resource "aws_lb_target_group" "logstash_target_group" {
   name        = "logstash-target-group"
-  port        = 8090
+  port        = 5044
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = "${aws_default_vpc.default_vpc.id}" 
@@ -158,7 +158,7 @@ resource "aws_lb_target_group" "logstash_target_group" {
 
 resource "aws_lb_listener" "logstash_listener" {
   load_balancer_arn = "${aws_alb.logstash_load_balancer.arn}" 
-  port              = "8090"
+  port              = "5044"
   protocol          = "HTTP"
   default_action {
     type             = "forward"
@@ -199,13 +199,19 @@ resource "aws_ecs_task_definition" "httpd_task" {
          "essential": true,
          "image": "httpd:2.4",
          "logConfiguration": {
-            "logDriver": "awsfirelens",
-               "options": {
-                "Name": "http",
-                "Host": "${aws_alb.logstash_load_balancer.dns_name}",
-                "Port": "8090",
-                "Format": "json"
-            }
+                "logDriver": "awsfirelens",
+                "options": {
+                    "Name": "es",
+                    "Host": "maxaviberman.es.us-central1.gcp.cloud.es.io",
+                    "Port": "9243",
+		    "http_user": "elastic",
+		    "http_passwd": "STVxhAJRpwCKbSvKGN0IqRML",
+                    "tls": "On",
+                    "Index": "MaxBerman",
+                    "Type": "access_log",
+		    "logstash_format": "On",
+		    "suppress_type_name": "On"
+                }
          },
          "name": "httpd_task",
          "portMappings": [
