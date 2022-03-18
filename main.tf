@@ -63,7 +63,7 @@ resource "aws_ecs_task_definition" "logstash_task" {
                "awslogs-stream-prefix": "ecs"
             }
          },
-         "name": "logstash",
+         "name": "logstash_task",
          "portMappings": [
             {
                "containerPort": 8090,
@@ -187,7 +187,7 @@ resource "aws_ecs_task_definition" "httpd_task" {
             "logDriver": "awsfirelens",
                "options": {
                 "Name": "http",
-                "Host": aws_alb.logstash_load_balancer.dns_name,
+                "Host": "aws_alb.logstash_load_balancer.dns_name",
                 "Port": "8090",
                 "Format": "json"
             }
@@ -261,6 +261,12 @@ resource "aws_ecs_service" "httpd_service" {
     target_group_arn = "${aws_lb_target_group.http_target_group.arn}" 
     container_name   = "${aws_ecs_task_definition.httpd_task.family}"
     container_port   = 80
+  }
+  
+  network_configuration {
+    subnets          = ["${aws_default_subnet.default_subnet_a.id}", "${aws_default_subnet.default_subnet_b.id}", "${aws_default_subnet.default_subnet_c.id}"]
+    security_groups  = ["${aws_security_group.load_balancer_security_group.id}","${aws_security_group.logstash_security_group.id}"]
+    assign_public_ip = true
   }
 }
 
