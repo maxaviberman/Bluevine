@@ -67,7 +67,7 @@ resource "aws_ecs_task_definition" "httpd_task" {
       },
       {
          "command": [
-            "/bin/sh -c \"echo '<html> <head> <title>Bluevine</title> <style>body {margin-top: 40px; background-color: #333;} </style> </head><body> <div style=color:white;text-align:center> <h1>Hello World!!!</h1> <h2>Max Berman</h2> <p>March, 2022</p> </div></body></html>' >  /usr/local/apache2/htdocs/index.html && httpd-foreground\""
+           "/bin/sh -c \"echo '<html> <head> <title>Bluevine</title> <style>body {margin-top: 40px; background-color: #333;} </style> </head><body> <div style=color:white;text-align:center> <h1>Hello World!!!</h1> <h2>Max Berman</h2> <p>March, 2022</p> </div></body></html>' >  /usr/local/apache2/htdocs/index.html && httpd-foreground\"" 
          ],
          "entryPoint": [
             "sh",
@@ -78,16 +78,15 @@ resource "aws_ecs_task_definition" "httpd_task" {
          "logConfiguration": {
                 "logDriver": "awsfirelens",
                 "options": {
-                    "Name": "es",
-                    "Host": "maxaviberman.es.us-central1.gcp.cloud.es.io",
-                    "Port": "9243",
-		    "http_user": "elastic",
-		    "http_passwd": "STVxhAJRpwCKbSvKGN0IqRML",
-                    "tls": "On",
-                    "Index": "MaxBerman",
-                    "Type": "access_log",
-		    "logstash_format": "On",
-		    "suppress_type_name": "On"
+			"Name" : "es",
+    			"Include_Tag_Key" : "true",
+    			"Tag_Key" : "tags",
+    			"tls" : "On",
+    			"tls.verify" : "Off",
+		        "logstash_format": "On",
+                    	"suppress_type_name": "On",
+    			"cloud_id" : "MaxAviBerman:dXMtY2VudHJhbDEuZ2NwLmNsb3VkLmVzLmlvJDBjOWZhMjFmM2QyODRhNTRhMmJkNTY0MWE1ZDk2ZTA2JDQ0NTNjOTFlMjMyZDQ0ZmFiZjljNDJhNTQ4NzNlMTZl",
+    			"cloud_auth" : "elastic:STVxhAJRpwCKbSvKGN0IqRML"
                 }
          },
          "name": "httpd_task",
@@ -111,8 +110,8 @@ resource "aws_ecs_task_definition" "httpd_task" {
 
 resource "aws_security_group" "load_balancer_security_group" {
   ingress {
-    from_port   = ${var.http_listener_port}
-    to_port     = ${var.http_listener_port}
+    from_port   = "${var.http_listener_port}"
+    to_port     = "${var.http_listener_port}"
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -138,7 +137,7 @@ resource "aws_alb" "application_load_balancer" {
 
 resource "aws_lb_target_group" "http_target_group" {
   name        = "http-target-group"
-  port        = ${var.http_listener_port}
+  port        = "${var.http_listener_port}"
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = "${aws_default_vpc.default_vpc.id}" 
@@ -158,12 +157,12 @@ resource "aws_ecs_service" "httpd_service" {
   load_balancer {
     target_group_arn = "${aws_lb_target_group.http_target_group.arn}" 
     container_name   = "${aws_ecs_task_definition.httpd_task.family}"
-    container_port   = ${var.http_listener_port}
+    container_port   = "${var.http_listener_port}"
   }
   
   network_configuration {
     subnets          = ["${aws_default_subnet.default_subnet_a.id}", "${aws_default_subnet.default_subnet_b.id}", "${aws_default_subnet.default_subnet_c.id}"]
-    security_groups  = ["${aws_security_group.load_balancer_security_group.id}","${aws_security_group.logstash_security_group.id}"]
+    security_groups  = ["${aws_security_group.load_balancer_security_group.id}"]
     assign_public_ip = true
   }
 }
@@ -200,10 +199,10 @@ resource "aws_lb_listener_rule" "kibana_redirect" {
     type = "redirect"
 
     redirect {
-      host      = "https://maxaviberman.kb.us-central1.gcp.cloud.es.io"
+      host      = "maxaviberman.kb.us-central1.gcp.cloud.es.io"
       port        = "9243"
       protocol    = "HTTPS"
-      status_code = "HTTP_301"
+      status_code = "HTTP_302"
     }
   }
   
