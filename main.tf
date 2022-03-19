@@ -1,5 +1,5 @@
 provider "aws" {
-  region  = "eu-west-1"
+  region  = "${var.aws_region}"
 }
 
 resource "aws_default_vpc" "default_vpc" {
@@ -7,20 +7,16 @@ resource "aws_default_vpc" "default_vpc" {
 
 # Providing a reference to our default subnets
 resource "aws_default_subnet" "default_subnet_a" {
-  availability_zone = "eu-west-1a"
+  availability_zone = "${var.aws_region}a"
 }
 
 resource "aws_default_subnet" "default_subnet_b" {
-  availability_zone = "eu-west-1b"
+  availability_zone = "${var.aws_region}b"
 }
 
 resource "aws_default_subnet" "default_subnet_c" {
-  availability_zone = "eu-west-1c"
+  availability_zone = "${var.aws_region}c"
 }
-
-#resource "aws_ecr_repository" "mberman_ecr_repo_httpd" {
-#  name = "mberman-ecr-repo/httpd"
-#}
 
 resource "aws_ecs_cluster" "bluevine_cluster" {
   name = "bluevine-cluster"
@@ -54,13 +50,13 @@ resource "aws_ecs_task_definition" "httpd_task" {
   [
       {
          "essential":true,
-         "image":"906394416424.dkr.ecr.us-east-1.amazonaws.com/aws-for-fluent-bit:stable",
+         "image":"amazon/aws-for-fluent-bit:stable",
          "name":"log_router",
          "logConfiguration": {
             "logDriver": "awslogs",
             "options": {
                "awslogs-group" : "/ecs/fargate-task-definition",
-               "awslogs-region": "eu-west-1",
+               "awslogs-region": "${var.aws_region}",
                "awslogs-stream-prefix": "ecs"
             }
          },
@@ -97,8 +93,8 @@ resource "aws_ecs_task_definition" "httpd_task" {
          "name": "httpd_task",
          "portMappings": [
             {
-               "containerPort": 80,
-               "hostPort": 80,
+               "containerPort": ${http_listener_port},
+               "hostPort": ${http_listener_port},
                "protocol": "tcp"
             }
          ]
@@ -115,8 +111,8 @@ resource "aws_ecs_task_definition" "httpd_task" {
 
 resource "aws_security_group" "load_balancer_security_group" {
   ingress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = ${http_listener_port}
+    to_port     = ${http_listener_port}
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -142,7 +138,7 @@ resource "aws_alb" "application_load_balancer" {
 
 resource "aws_lb_target_group" "http_target_group" {
   name        = "http-target-group"
-  port        = 80
+  port        = ${http_listener_port}
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = "${aws_default_vpc.default_vpc.id}" 
@@ -162,7 +158,7 @@ resource "aws_ecs_service" "httpd_service" {
   load_balancer {
     target_group_arn = "${aws_lb_target_group.http_target_group.arn}" 
     container_name   = "${aws_ecs_task_definition.httpd_task.family}"
-    container_port   = 80
+    container_port   = ${http_listener_port}
   }
   
   network_configuration {
@@ -174,7 +170,7 @@ resource "aws_ecs_service" "httpd_service" {
 
 resource "aws_lb_listener" "http_listener" {
   load_balancer_arn = "${aws_alb.application_load_balancer.arn}" 
-  port              = "80"
+  port              = "${http_listener_port}"
   protocol          = "HTTP"
   default_action {
     type             = "forward"
