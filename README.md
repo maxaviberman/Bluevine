@@ -1,1 +1,3 @@
-![Home Assignments](https://github.com/maxaviberman/Bluevine/blob/main/Home%20Assignment.png)
+![Home Assignments](Home%20Assignment.png)
+![High Level Diagarm](../misc/HighLevel.png)
+![Application Loadbalancer](../misc/ALB.png)
