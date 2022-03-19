@@ -10,8 +10,8 @@ The Apache Server forwards logs to ES via awsfirelens
 ## Application LoadBalancer
 ![Application Loadbalancer](https://github.com/maxaviberman/misc/blob/58ec260d51915b3c2a683f4498324456762b6bc6/ALB.PNG)
 The ALB is setup with two rules:
-1. "/" path to be routed to one of the Apache servers
-2. "/kibana/" path to be re-direct to Kibana
+1. [Home Page](www.mberman.co.uk) - "/" path to be routed to one of the Apache servers
+2. [Kibana](www.mberman.co.uk/kibana/) - "/kibana/" path to be re-direct to Kibana
 
 ## Automatic Deployment
 I'm using [Terraform](https://www.terraform.io/) to deploy on the AWS Cloud
@@ -21,6 +21,8 @@ I'm using [Terraform](https://www.terraform.io/) to deploy on the AWS Cloud
 User: operator
 Pass: operator
 
-
 ### References
 [fluentbit output of ES type](https://docs.fluentbit.io/manual/pipeline/outputs/elasticsearch)
+[httpd](https://hub.docker.com/_/httpd)
+[terraform - ecs](https://www.techbeatly.com/creating-the-elastic-stack-on-aws-using-terraform/)
+
