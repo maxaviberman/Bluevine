@@ -93,8 +93,8 @@ resource "aws_ecs_task_definition" "httpd_task" {
          "name": "httpd_task",
          "portMappings": [
             {
-               "containerPort": ${http_listener_port},
-               "hostPort": ${http_listener_port},
+               "containerPort": ${var.http_listener_port},
+               "hostPort": ${var.http_listener_port},
                "protocol": "tcp"
             }
          ]
@@ -111,8 +111,8 @@ resource "aws_ecs_task_definition" "httpd_task" {
 
 resource "aws_security_group" "load_balancer_security_group" {
   ingress {
-    from_port   = ${http_listener_port}
-    to_port     = ${http_listener_port}
+    from_port   = ${var.http_listener_port}
+    to_port     = ${var.http_listener_port}
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -138,7 +138,7 @@ resource "aws_alb" "application_load_balancer" {
 
 resource "aws_lb_target_group" "http_target_group" {
   name        = "http-target-group"
-  port        = ${http_listener_port}
+  port        = ${var.http_listener_port}
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = "${aws_default_vpc.default_vpc.id}" 
@@ -158,7 +158,7 @@ resource "aws_ecs_service" "httpd_service" {
   load_balancer {
     target_group_arn = "${aws_lb_target_group.http_target_group.arn}" 
     container_name   = "${aws_ecs_task_definition.httpd_task.family}"
-    container_port   = ${http_listener_port}
+    container_port   = ${var.http_listener_port}
   }
   
   network_configuration {
@@ -170,7 +170,7 @@ resource "aws_ecs_service" "httpd_service" {
 
 resource "aws_lb_listener" "http_listener" {
   load_balancer_arn = "${aws_alb.application_load_balancer.arn}" 
-  port              = "${http_listener_port}"
+  port              = "${var.http_listener_port}"
   protocol          = "HTTP"
   default_action {
     type             = "forward"
