@@ -1,3 +1,3 @@
 ![Home Assignments](Home%20Assignment.png)
-![High Level Diagarm](/misc/HighLevel.PNG)
-![Application Loadbalancer](/../misc/ALB.PNG)
+![High Level Diagarm](/misc/HighLevel.png)
+![Application Loadbalancer](../misc/ALB.png)
