@@ -1,0 +1,161 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:"Arial Unicode MS";
+	panose-1:2 11 6 4 2 2 2 2 2 4;}
+@font-face
+	{font-family:"\@Arial Unicode MS";
+	panose-1:2 11 6 4 2 2 2 2 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	line-height:115%;
+	font-size:11.0pt;
+	font-family:"Arial",sans-serif;}
+.MsoChpDefault
+	{font-family:"Arial",sans-serif;}
+.MsoPapDefault
+	{line-height:115%;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+
+<body lang=en-IL style='word-wrap:break-word'>
+
+<div class=WordSection1>
+
+<p class=MsoNormal style='line-height:171%'><span lang=EN style='font-size:
+12.0pt;line-height:171%;color:#172B4D'><img width=220 height=37 id=image1.png
+src="Home%20Assignment_files/image001.gif"></span></p>
+
+<p class=MsoNormal style='line-height:171%'><span lang=EN style='font-size:
+12.0pt;line-height:171%;color:#172B4D'>&nbsp;</span></p>
+
+<p class=MsoNormal style='line-height:171%'><b><span lang=EN style='font-size:
+12.0pt;line-height:171%;color:#172B4D'>Welcome to the home assignment for the
+DevOps engineer position at BlueVine</span></b></p>
+
+<p class=MsoNormal style='margin-top:9.0pt;line-height:171%'><span lang=EN
+style='font-size:12.0pt;line-height:171%;color:#172B4D'>This assignment purpose
+is to test your technical approach and attitude</span></p>
+
+<ol style='margin-top:0cm' start=1 type=1>
+ <li class=MsoNormal style='margin-top:16.0pt'><span lang=EN style='font-size:
+     12.0pt;line-height:115%;color:#172B4D'>Create a simple web application
+     with the following components:</span></li>
+ <ol style='margin-top:0cm' start=1 type=a>
+  <li class=MsoNormal><b><span lang=EN style='font-size:12.0pt;line-height:
+      115%;color:#172B4D'>Backend</span></b><span lang=EN style='font-size:
+      12.0pt;line-height:115%;color:#172B4D'> - could be created using any high
+      level language of your choice</span></li>
+  <li class=MsoNormal><b><span lang=EN style='font-size:12.0pt;line-height:
+      115%;color:#172B4D'>Proxy / Load balancer</span></b><span lang=EN
+      style='font-size:12.0pt;line-height:115%;color:#172B4D'> - a simple
+      router to serve requests to the backend service, you may choose any
+      solution to create it such as Nginx, Apache2 , etc….</span></li>
+ </ol>
+ <li class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+     color:#172B4D'>The <b>Backend </b>service should return a simple page with
+     “Hello world!“ in it upon receiving requests on the root page</span></li>
+ <li class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+     color:#172B4D'>Deploy partial Elastic (<img width=15 height=15
+     id=image2.png src="Home%20Assignment_files/image002.gif"></span><span
+     lang=EN><a href="https://www.elastic.co/"><span style='font-size:12.0pt;
+     line-height:115%;color:#1155CC;background:white;text-decoration:none'>Free
+     and Open Search: The Creators of Elasticsearch, ELK &amp; Kibana | Elastic</span></a></span><span
+     lang=EN style='font-size:12.0pt;line-height:115%;color:#172B4D'>)  stack
+     deployment with:</span></li>
+ <ol style='margin-top:0cm' start=1 type=a>
+  <li class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+      color:#172B4D'>Elasticsearch (Database)</span></li>
+  <li class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+      color:#172B4D'>Kibana (Dashboard)</span></li>
+ </ol>
+ <li class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+     color:#172B4D'>The <b>Proxy / Load balancer </b>will redirect the traffic
+     by the following:</span></li>
+ <ol style='margin-top:0cm' start=1 type=a>
+  <li class=MsoNormal><span lang=EN><a href="http://yourdomain/"><span
+      style='font-size:12.0pt;line-height:115%;color:#1155CC;text-decoration:
+      none'>http://yourdomain/</span></a></span><span lang=EN style='font-size:
+      12.0pt;line-height:115%;font-family:"Arial Unicode MS",sans-serif;
+      color:#172B4D'> &#8594; point to your application (</span><b><span
+      lang=EN style='font-size:12.0pt;line-height:115%;color:#172B4D'>backend</span></b><span
+      lang=EN style='font-size:12.0pt;line-height:115%;color:#172B4D'>)</span></li>
+  <li class=MsoNormal><span lang=EN><a href="http://yourdomain/kibana/"><span
+      style='font-size:12.0pt;line-height:115%;color:#1155CC;text-decoration:
+      none'>http://yourdomain/kibana/</span></a></span><span lang=EN
+      style='font-size:12.0pt;line-height:115%;font-family:"Arial Unicode MS",sans-serif;
+      color:#172B4D'> &#8594; point to the </span><b><span lang=EN
+      style='font-size:12.0pt;line-height:115%;color:#172B4D'>Kibana</span></b><span
+      lang=EN style='font-size:12.0pt;line-height:115%;color:#172B4D'> service</span></li>
+ </ol>
+ <li class=MsoNormal><span lang=EN style='font-size:12.0pt;line-height:115%;
+     color:#172B4D'>Send the application (<b>backend</b>) logs to</span><span
+     lang=EN><a href="http://elastic.co/"><span style='font-size:12.0pt;
+     line-height:115%;color:#172B4D;text-decoration:none'> </span></a><a
+     href="http://elastic.co/"><span style='font-size:12.0pt;line-height:115%;
+     color:#1155CC;text-decoration:none'>Elasti</span></a></span><span lang=EN
+     style='font-size:12.0pt;line-height:115%;color:#172B4D'>csearch in a way
+     of your choice</span></li>
+</ol>
+
+<p class=MsoNormal style='margin-top:9.0pt;line-height:171%'><span lang=EN
+style='font-size:12.0pt;line-height:171%;color:#172B4D'>6. Discover the logs
+with Kibana<br>
+7. Create a public repository  (on Github/Gitlab…etc) , push you solution/code
+to it. </span></p>
+
+<p class=MsoNormal style='margin-top:9.0pt;line-height:171%'><b><span lang=EN
+style='font-size:12.0pt;line-height:171%;color:#172B4D'>TIPS:</span></b></p>
+
+<p class=MsoNormal style='margin-top:16.0pt;margin-right:0cm;margin-bottom:
+0cm;margin-left:36.0pt;margin-bottom:.0001pt;text-indent:-18.0pt'><span
+lang=EN style='font-size:12.0pt;line-height:115%;color:#172B4D'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+dir=LTR></span><span lang=EN style='font-size:12.0pt;line-height:115%;
+color:#172B4D'>You can send logs with code or with 3 party application</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-indent:-18.0pt'><span
+lang=EN style='font-size:12.0pt;line-height:115%;color:#172B4D'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+dir=LTR></span><span lang=EN style='font-size:12.0pt;line-height:115%;
+color:#172B4D'>You can use any infrastructure to your solution
+(docker,compose,kubrenetes…etc)</span></p>
+
+<p class=MsoNormal style='margin-left:36.0pt;text-indent:-18.0pt'><span
+lang=EN style='font-size:12.0pt;line-height:115%;color:#172B4D'>&#9679;<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span
+dir=LTR></span><span lang=EN style='font-size:12.0pt;line-height:115%;
+color:#172B4D'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-top:9.0pt;line-height:171%'><span lang=EN
+style='font-size:12.0pt;line-height:171%;color:#172B4D'>Good luck!</span></p>
+
+<p class=MsoNormal><span lang=EN>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>
