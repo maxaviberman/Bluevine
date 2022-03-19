@@ -6,7 +6,7 @@
 ```
 The Apache Server forwards logs to ES via awsfirelens
 ```
-4. Elastic Cloud - ElesticSearch and Kiban
+3. Elastic Cloud - ElesticSearch and Kiban
 ## Application LoadBalancer
 ![Application Loadbalancer](https://github.com/maxaviberman/misc/blob/58ec260d51915b3c2a683f4498324456762b6bc6/ALB.PNG)
 The ALB is setup with two rules:
