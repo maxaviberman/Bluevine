@@ -9,3 +9,8 @@ variable "http_listener_port" {
   default = 80
   description = "The HTTP Listener port"
 }
+
+variable "es_password" {
+  type    = string
+  description = "ES Password - do not keep passwrod in clear"
+}
