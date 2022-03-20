@@ -12,5 +12,6 @@ variable "http_listener_port" {
 
 variable "es_password" {
   type    = string
+  default = "dummy_password"
   description = "ES Password - do not keep passwrod in clear"
 }
