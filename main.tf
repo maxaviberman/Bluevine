@@ -61,7 +61,8 @@ resource "aws_ecs_task_definition" "httpd_task" {
             }
          },
          "firelensConfiguration":{
-             "type":"fluentbit"
+             "type":"fluentbit",
+	     "enable-ecs-log-metadata":"true"
          },
          "memoryReservation":50
       },
@@ -83,6 +84,7 @@ resource "aws_ecs_task_definition" "httpd_task" {
     			"Tag_Key" : "tags",
     			"tls" : "On",
     			"tls.verify" : "Off",
+			"Type" : "apache_access",
 		        "logstash_format": "On",
                     	"suppress_type_name": "On",
     			"cloud_id" : "MaxAviBerman:dXMtY2VudHJhbDEuZ2NwLmNsb3VkLmVzLmlvJDBjOWZhMjFmM2QyODRhNTRhMmJkNTY0MWE1ZDk2ZTA2JDQ0NTNjOTFlMjMyZDQ0ZmFiZjljNDJhNTQ4NzNlMTZl",
