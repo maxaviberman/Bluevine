@@ -86,7 +86,7 @@ resource "aws_ecs_task_definition" "httpd_task" {
 		        "logstash_format": "On",
                     	"suppress_type_name": "On",
     			"cloud_id" : "MaxAviBerman:dXMtY2VudHJhbDEuZ2NwLmNsb3VkLmVzLmlvJDBjOWZhMjFmM2QyODRhNTRhMmJkNTY0MWE1ZDk2ZTA2JDQ0NTNjOTFlMjMyZDQ0ZmFiZjljNDJhNTQ4NzNlMTZl",
-    			"cloud_auth" : "elastic:STVxhAJRpwCKbSvKGN0IqRML"
+    			"cloud_auth" : "elastic:${var.es_password}"
                 }
          },
          "name": "httpd_task",
